@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon ./src/bin/www",
+    "prod": "NODE_ENV=production node ./src/bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:migrate": "dotenv sequelize-cli db:migrate",
+    "db:seed:all": "dotenv sequelize-cli db:seed:all"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "debug": "^4.3.4",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1",
+    "sequelize": "^6.32.1",
+    "sequelize-cli": "^6.6.1",
+    "sqlite3": "^5.1.6"
+  }
+}
