@@ -1,7 +1,6 @@
-const db = require('../db/models');
 const { Place, Category } = require('../db/models');
 const createError = require('../utils/createError');
-const categoryService = require('./category');
+const categoryService = require('./category.service');
 
 const getAllPlaces = async () => {
     const allPlaces = await Place.findAll({
@@ -13,7 +12,7 @@ const getAllPlaces = async () => {
     return allPlaces; 
 };
 
-const getPlace = async (placeId) => {
+const getPlaceById = async (placeId) => {
     try {
         const place = await Place.findByPk(placeId, {
             include: [
@@ -50,7 +49,7 @@ const createPlace = async (newPlace) => {
 
 const updatePlace = async (placeId, fields) => {
     try {
-        const place = await getPlace(placeId);
+        const place = await getPlaceById(placeId);
         await place.update(fields);
         return place;
 
@@ -60,14 +59,14 @@ const updatePlace = async (placeId, fields) => {
 };
 
 const deletePlace = async (placeId) => {
-    const place = await getPlace(placeId);
+    const place = await getPlaceById(placeId);
     place.destroy();
     return place;
 };
 
 module.exports = {
     getAllPlaces,
-    getPlace,
+    getPlaceById,
     createPlace,
     updatePlace,
     deletePlace

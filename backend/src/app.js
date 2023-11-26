@@ -1,12 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 const logger = require('morgan');
-const db = require ('./db/models');
 const { errorHandler } = require('./middleware/auth/');
 const createError = require('./utils/createError');
-
 
 const routes = require('./routes');
 

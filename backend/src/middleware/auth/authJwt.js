@@ -1,37 +1,51 @@
 const jwt = require('jsonwebtoken');
-const config = require('../../config/auth');
 const createError = require('../../utils/createError');
-const { User } = require('../../db/models');
 
-const verifyToken = (req, res, next) => {
-    let token = req.headers['authorization'];
+const verifyAccessToken = (req, res, next) => {
+    let token = getTokenFromRequest(req);
+
+    jwt.verify(token,
+        process.env.JWT_ACCESS_SECRET,
+        (err, decoded) => {
+            if (err) {
+                return next(createError(401, 'Authentication Error', 'User not found',`There was a problem with the access token: ${err.message}`));
+            }
+            req.userId = Number(decoded.sub);
+            req.roles = decoded.roles;
+            return next();
+        });
+}
+
+const verifyRefreshToken = (req, res, next) => {
+    let token = getTokenFromRequest(req);
+
+    jwt.verify(token,
+        process.env.JWT_REFRESH_SECRET,
+        (err, decoded) => {
+            if (err) {
+                return next(createError(401, 'Authentication Error', 'User not found',`There was a problem with the access token: ${err.message}`));
+            }
+            req.userId = Number(decoded.sub);
+            req.token = token;
+            return next();
+        });
+}
+
+const getTokenFromRequest = (req) => {
+    let authHeader = req.headers['authorization'];
+    let token;
+    if (authHeader.startsWith("Bearer ")) {
+        token = authHeader.substring(7);
+    }
 
     if (!token) {
         return next(createError(403, 'Authentication Error', 'An access token must be provided'));
     }
 
-    jwt.verify(token, 
-        config.secret,
-        (err, decoded) => {
-            if (err) {
-                return next(createError(401, 'Authentication Error', 'User not found',`There was a problem with the access token: ${err.message}`));
-            }
-            req.userId = decoded.id;
-            next();
-        });
-}
-const getRoles = async (req, res, next) => {
-    try {
-        const user = await User.findByPk(req.userId);
-        if (!user) throw createError(401, 'Authentication Error', 'User not found');
-        const roles = await user.getRoles();
-        req.roles = roles.map((role) => role.dataValues.name );
-        return next();
+    return token;
 
-    } catch (err) {
-        return next(err);
-    }
 }
+
 const isAdmin = async (req, res, next) => {
     const roles = req.roles;
         if (roles.includes('admin')){
@@ -51,9 +65,10 @@ const isEditor = async (req, res, next) => {
 }
 
 const authJwt = {
-    verifyToken: verifyToken,
-    isAdmin: [getRoles, isAdmin],
-    isEditor: [getRoles, isEditor]
+    verifyRefreshToken: verifyRefreshToken,
+    verifyAccessToken: verifyAccessToken,
+    isAdmin: [isAdmin],
+    isEditor: [isEditor]
 }
 
 module.exports = authJwt;

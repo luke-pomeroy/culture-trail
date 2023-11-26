@@ -10,7 +10,7 @@ const getAllCategories = async () => {
     return allCategories; 
 };
 
-const getCategory = async (categoryId) => {
+const getCategoryById = async (categoryId) => {
     try {
         const category = await Category.findByPk(categoryId, {
             include: { model: Place }
@@ -65,7 +65,7 @@ const getOrCreateCategories = async (categories) => {
 
 module.exports = {
     getAllCategories,
-    getCategory,
+    getCategoryById,
     createCategory,
     getOrCreateCategories
 };

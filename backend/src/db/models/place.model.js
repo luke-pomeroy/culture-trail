@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-const placecategory = require('./placecategory');
+const placecategory = require('./placecategory.model');
 module.exports = (sequelize, DataTypes) => {
   class Place extends Model {
     /**

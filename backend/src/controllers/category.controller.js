@@ -1,4 +1,4 @@
-const categoryService = require("../services/category");
+const categoryService = require("../services/category.service");
 
 exports.getAllCategories = async (req, res) => {
     const categories = await categoryService.getAllCategories();
@@ -8,7 +8,7 @@ exports.getAllCategories = async (req, res) => {
 exports.getCategory = async (req, res, next) => {
     try {
         const { categoryId } = req.params;
-        const category = await categoryService.getCategory(categoryId);
+        const category = await categoryService.getCategoryById(categoryId);
         res.status(200).send({data: category});
 
     } catch (err) {

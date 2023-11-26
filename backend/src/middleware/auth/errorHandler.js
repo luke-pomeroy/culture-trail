@@ -1,5 +1,4 @@
 const { ValidationError } = require('sequelize');
-const isProduction = require('../../app');
 
 module.exports = (err, req, res, next) => {
 // Process validation and sequelize errors
@@ -21,6 +20,6 @@ module.exports = (err, req, res, next) => {
         statusCode: err.statusCode,
         message: err.message,
         errors: err.errors,
-        stack: isProduction ? {} : err.stack,
+        stack: process.env.NODE_ENV === 'production' ? {} : err.stack,
     });
 };

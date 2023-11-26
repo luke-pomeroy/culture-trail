@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { authJwt } = require('../../middleware/auth');
-const controller = require('../../controllers/user');
+const controller = require('../../controllers/user.controller');
 
 router.use((req, res, next) => {
     res.header(
@@ -15,19 +15,19 @@ router.get('/all', controller.allAccess);
 
 router.get(
     '/user',
-    [authJwt.verifyToken],
+    [authJwt.verifyAccessToken],
     controller.userBoard
 );
 
 router.get(
     '/editor',
-    [authJwt.verifyToken, authJwt.isEditor],
+    [authJwt.verifyAccessToken, authJwt.isEditor],
     controller.moderatorBoard
 );
 
 router.get(
     '/admin',
-    [authJwt.verifyToken, authJwt.isAdmin],
+    [authJwt.verifyAccessToken, authJwt.isAdmin],
     controller.adminBoard
 );
 

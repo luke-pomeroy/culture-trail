@@ -1,7 +1,7 @@
 module.exports = {
   development: {
-    storage: "src/db/dev.db",
-    dialect: "sqlite",
+    storage: process.env.DB_STORAGE,
+    dialect: process.env.DB_DIALECT,
     seederStorage: "sequelize",
     benchmark: true,
     logQueryParameters: true,
@@ -9,14 +9,14 @@ module.exports = {
     // logging: false
   },
   test: {
-    storage: "src/db/test.db",
-    dialect: "sqlite",
+    storage: process.env.DB_STORAGE,
+    dialect: process.env.DB_DIALECT,
     seederStorage: "sequelize",
     // logging: false
   },
   production: {
-    storage: "src/db/test.db",
-    dialect: "sqlite",
+    storage: process.env.DB_STORAGE,
+    dialect: process.env.DB_IALECT,
     seederStorage: "sequelize",
   }
 };

@@ -1,4 +1,4 @@
-const placeService = require("../services/place");
+const placeService = require("../services/place.service");
 
 exports.getAllPlaces = async (req, res) => {
     const places = await placeService.getAllPlaces();
@@ -14,7 +14,7 @@ exports.getAllPlacesByCategoryId = async (req, res) => {
 exports.getPlace = async (req, res, next) => {
     try {
         const { placeId } = req.params;
-        const place = await placeService.getPlace(placeId);
+        const place = await placeService.getPlaceById(placeId);
         res.status(200).send({data: place});
 
     } catch (err) {
