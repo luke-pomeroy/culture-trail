@@ -32,10 +32,12 @@ exports.createTourFromCategory = async (req, res, next) => {
     try {
         const { categoryId } = req.params;
         const userId = req.userId;
+
         const category = await categoryService.getCategoryById(categoryId);
-        tour = await tourService.createTour(userId, req.body);
-        
-        category.setPlaces(category.places);
+        const tour = await tourService.createTour(userId, req.body);
+
+        await tour.setPlaces(category.Places);
+        await tour.reload();
         res.status(200).send({tour: tour});
 
     } catch (err) {

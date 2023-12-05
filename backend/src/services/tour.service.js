@@ -38,6 +38,10 @@ const createTour = async (userId, newTour) => {
     const tour = await Tour.create({
         userId: userId,
         ...newTour
+    }, {
+        include: [{
+            model: Place
+        }]
     });
 
     return tour;
