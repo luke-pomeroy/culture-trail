@@ -25,20 +25,20 @@ const generateTokens = async (user) => {
             subject: user.id.toString()
         }
     );
-    console.log(refreshToken);
+    
     await addTokenToWhitelist(refreshToken, user.id);
 
     return { accessToken, refreshToken };
-}
+};
 
 const refreshTokens = async (user) => {
     await removeTokensFromWhitelistByUserId(user.id);
     return await generateTokens(user);
-}
+};
 
 const hashToken = (token) => {
     return crypto.createHash('sha512').update(token).digest('hex');
-}
+};
 
 const tokenInWhitelist = async (token) => {
     return await Token.findOne({
@@ -46,14 +46,14 @@ const tokenInWhitelist = async (token) => {
             hashedToken: hashToken(token)
         }
     });
-}
+};
 
 const addTokenToWhitelist = async (token, userId) => {
         return await Token.create({
             userId,
             hashedToken: hashToken(token)
         });
-}
+};
 
 const removeTokensFromWhitelistByUserId = async (userId) => {
     return await Token.destroy({
@@ -61,7 +61,7 @@ const removeTokensFromWhitelistByUserId = async (userId) => {
             userId: userId
         }
     });
-}
+};
 
 module.exports = {
     generateTokens,
@@ -69,4 +69,4 @@ module.exports = {
     tokenInWhitelist,
     addTokenToWhitelist,
     removeTokensFromWhitelistByUserId,
-}
+};

@@ -31,7 +31,6 @@ module.exports = {
     placesInsert.push(
       {
         name: place.name,
-        status: place.status,
         description: place.description,
         primaryMediaId: mediaId,
         externalLink: place.externalLink,

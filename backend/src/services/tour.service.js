@@ -1,61 +1,88 @@
-const { Tour } = require('../db/models');
+const { Tour, Place } = require('../db/models');
 const createError = require('../utils/createError');
 
-const getAllTours = async () => {
+const getUserTours = async (userId) => {
     const allTours = await Tour.findAll({
+        where: {
+            userId: userId
+        },
         include: [
-            {association: 'primaryMedia', attributes: ['name', 'filename', 'caption', 'creditLine']}        ]
+            {association: 'primaryMedia', attributes: ['name', 'filename', 'caption', 'creditLine']}      
+        ]
     });
-    return allTours; 
+
+    return allTours;
 };
 
-const getTourById = async (tourId) => {
-    try {
-        const tour = await Tour.findByPk(tourId, {
-            include: [
-                {association: 'primaryMedia', attributes: ['name', 'filename', 'caption', 'creditLine']},            ]
-        });
+const getTourById = async (userId, tourId) => {
+    const tour = await Tour.findOne({
+        where: {
+            id: tourId,
+            userId: userId
+        },
+        include: [
+            {association: 'primaryMedia', attributes: ['name', 'filename', 'caption', 'creditLine']},
+            {model: Place}          
+        ]
+    });
 
-        if (!tour) {
-            throw createError(404, 'Resource Not Found', 'Tour not found.');
-        }
-
-        return tour;
-    } catch (err) {
-        throw err;
+    if (!tour) {
+        throw createError(404, 'Resource Not Found', 'Tour not found.');
     }
+
+    return tour;
+
 };
 
-const createTour = async (newTour) => {
-    try {
-        const tour = await Tour.create(newTour);
-        return tour;
-    } catch (err) {
-        throw err;
-    }
+const createTour = async (userId, newTour) => {
+    const tour = await Tour.create({
+        userId: userId,
+        ...newTour
+    });
+
+    return tour;
 };
 
-const updateTour = async (tourId, fields) => {
-    try {
-        const tour = await getTourById(tourId);
-        await tour.update(fields);
-        return tour;
+const addPlaceToTour = async (userId, tourId, placeId) => {
+    const tour = await getTourById(userId, tourId);
 
-    } catch (err) {
-        throw err;
-    }
+    await tour.addPlace(Number(placeId));
+    await tour.reload();
+
+    return tour;
 };
 
-const deleteTour = async (tourId) => {
-    const tour = await getTour(tourId);
-    tour.destroy();
+const deletePlaceFromTour = async (userId, tourId, placeId) => {
+    const tour = await getTourById(userId, tourId);
+
+    await tour.removePlace(Number(placeId));
+    await tour.reload();
+
+    return tour;
+};
+
+const updateTour = async (userId, tourId, fields) => {
+    const tour = await getTourById(userId, tourId);
+
+    await tour.update(fields);
+
+    return tour;
+};
+
+const deleteTour = async (userId, tourId) => {
+    const tour = await getTour(userId, tourId);
+
+    await tour.destroy();
+
     return tour;
 };
 
 module.exports = {
-    getAllTours,
+    getUserTours,
     getTourById,
     createTour,
     updateTour,
+    addPlaceToTour,
+    deletePlaceFromTour,
     deleteTour
 };

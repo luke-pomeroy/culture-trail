@@ -6,7 +6,7 @@ const placeValidations = require('../../validations/place.validation');
 
 router.get('/', placeController.getAllPlaces);
 
-router.get('/:placeId', placeController.getPlace);
+router.get('/:placeId', placeController.getPlaceById);
 
 router.post('/', placeValidations.validatePlace, [authJwt.isEditor], placeController.createPlace);
 

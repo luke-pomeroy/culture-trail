@@ -4,11 +4,15 @@ const createError = require('../../utils/createError');
 const verifyAccessToken = (req, res, next) => {
     let token = getTokenFromRequest(req);
 
+    if (!token) {
+        return next(createError(403, 'Authentication Error', 'An access token must be provided'));
+    }
+
     jwt.verify(token,
         process.env.JWT_ACCESS_SECRET,
         (err, decoded) => {
             if (err) {
-                return next(createError(401, 'Authentication Error', 'User not found',`There was a problem with the access token: ${err.message}`));
+                return next(createError(401, 'Authentication Error', 'Access token expired.'));
             }
             req.userId = Number(decoded.sub);
             req.roles = decoded.roles;
@@ -19,11 +23,15 @@ const verifyAccessToken = (req, res, next) => {
 const verifyRefreshToken = (req, res, next) => {
     let token = getTokenFromRequest(req);
 
+    if (!token) {
+        return next(createError(403, 'Authentication Error', 'A refresh token must be provided'));
+    }
+
     jwt.verify(token,
         process.env.JWT_REFRESH_SECRET,
         (err, decoded) => {
             if (err) {
-                return next(createError(401, 'Authentication Error', 'User not found',`There was a problem with the access token: ${err.message}`));
+                return next(createError(401, 'Authentication Error', 'Refresh token expired.'));
             }
             req.userId = Number(decoded.sub);
             req.token = token;
@@ -37,11 +45,6 @@ const getTokenFromRequest = (req) => {
     if (authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7);
     }
-
-    if (!token) {
-        return next(createError(403, 'Authentication Error', 'An access token must be provided'));
-    }
-
     return token;
 
 }

@@ -11,7 +11,7 @@ exports.getAllPlacesByCategoryId = async (req, res) => {
     res.status(200).send({data: places});
 }
 
-exports.getPlace = async (req, res, next) => {
+exports.getPlaceById = async (req, res, next) => {
     try {
         const { placeId } = req.params;
         const place = await placeService.getPlaceById(placeId);

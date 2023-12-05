@@ -11,15 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Tour.hasMany(models.TourPlace);
+      Tour.belongsToMany(models.Place, { through: models.TourPlace });
       Tour.belongsTo(models.User);
-      Tour.belongsTo(models.TourTemplate);
       Tour.belongsTo(models.Media, { foreignKey: 'primaryMediaId', as: 'primaryMedia' });
     }
   }
   Tour.init({
     userId: DataTypes.INTEGER,
-    tourTemplateId: DataTypes.INTEGER,
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
     primaryMediaId: DataTypes.STRING,

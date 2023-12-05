@@ -11,42 +11,31 @@ const getAllCategories = async () => {
 };
 
 const getCategoryById = async (categoryId) => {
-    try {
-        const category = await Category.findByPk(categoryId, {
-            include: { model: Place }
-        });
+    const category = await Category.findByPk(categoryId, {
+        include: { model: Place }
+    });
 
-        if (!category) {
-            throw createError(404, 'Resource Not Found', 'Category not found.');
-        }
-
-        return category;
-
-    } catch (err) {
-        throw err;
+    if (!category) {
+        throw createError(404, 'Resource Not Found', 'Category not found.');
     }
+
+    return category;
+
 };
 
 const getCategoryByName = async (categoryName) => {
-    try {
-        const category = await Category.findOne({
-            where: { name: categoryName }
-        });
+    const category = await Category.findOne({
+        where: { name: categoryName }
+    });
 
-        return category;
-    } catch (err) {
-        throw err;
-    }
+    return category;
+
 };
 
 const createCategory = async (category) => {
-    try {
-        const newCategory = await Category.create(category);
-        return newCategory;
+    const newCategory = await Category.create(category);
+    return newCategory;
 
-    } catch (err) {
-        throw err;
-    }
 };
 
 const getOrCreateCategories = async (categories) => {
@@ -63,9 +52,32 @@ const getOrCreateCategories = async (categories) => {
     return allCategories;
 };
 
+const addPlaceToCategory = async (categoryId, placeId) => {
+    const category = await getCategoryById(categoryId);
+    await category.addPlace(Number(placeId));
+    await category.reload();
+    return category;
+};
+
+const deletePlaceFromCategory = async (categoryId, placeId) => {
+    const category = await getCategoryById(categoryId);
+    await category.removePlaces(Number(placeId));
+    await category.reload();
+    return category;
+};
+
+const deleteCategory = async (categoryId) => {
+    const category = await getCategoryById(categoryId);
+    await category.destroy();
+    return category;
+};
+
 module.exports = {
     getAllCategories,
     getCategoryById,
     createCategory,
-    getOrCreateCategories
+    getOrCreateCategories,
+    addPlaceToCategory,
+    deletePlaceFromCategory,
+    deleteCategory
 };

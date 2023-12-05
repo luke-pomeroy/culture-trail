@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       Media.hasMany(models.Category, { foreignKey: 'primaryMediaId', as: 'categoryPrimaryMedia' });
       Media.hasMany(models.Place, { foreignKey: 'primaryMediaId', as: 'placePrimaryMedia' });
       Media.hasMany(models.Tour, { foreignKey: 'primaryMediaId', as: 'tourPrimaryMedia' });
-      Media.hasMany(models.TourTemplate, { foreignKey: 'primaryMediaId', as: 'tourTemplatePrimaryMedia' });
       Media.belongsToMany(models.Place, { through: models.MediaLink, scope: { relatedType: 'place' }})
     }
     

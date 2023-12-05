@@ -14,11 +14,6 @@ module.exports = {
         allowNull: false,
         unique: true
       },
-      status: {
-        type: Sequelize.STRING(20),
-        allowNull: false,
-        defaultValue: 'draft'
-      },
       description: {
         type: Sequelize.TEXT
       },

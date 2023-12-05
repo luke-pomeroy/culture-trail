@@ -1,5 +1,4 @@
 const createError = require('../utils/createError');
-
 const userService = require('../services/user.service');
 const authService = require('../services/auth.service');
 const roleService = require('../services/role.service');
@@ -63,7 +62,7 @@ const refreshToken = async (req, res, next) => {
 
         const tokenInWhitelist = await authService.tokenInWhitelist(req.token);
         if(!tokenInWhitelist) {
-            return next(createError(401, 'Authentication Error', 'Refresh Token is not valid.'));
+            return next(createError(401, 'Authentication Error', 'Refresh token expired.'));
         }
 
         const { accessToken, refreshToken } = await authService.refreshTokens(user);

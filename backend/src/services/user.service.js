@@ -14,7 +14,7 @@ const getUserByEmail = async (email) => {
             }
         }]
     });
-}
+};
 
 const getUserById = async (userId) => {
     return await User.findOne({
@@ -29,21 +29,22 @@ const getUserById = async (userId) => {
             }
         }]
     });
-}
+};
 
 const createUser = async (email, password) => {
     return await  User.create({
         email: email,
         password: bcrypt.hashSync(password, 8)
     });
-}
+};
 
 const validatePassword = (password, userPassword) => {
     return bcrypt.compareSync(
         password,
         userPassword
     );
-}
+};
+
 module.exports = {
     getUserByEmail,
     getUserById,

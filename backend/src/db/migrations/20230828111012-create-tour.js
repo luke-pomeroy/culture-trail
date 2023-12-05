@@ -11,17 +11,7 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        references: {
-          model: 'User',
-          key: 'id'
-        }
-      },
-      tourTemplateId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'TourTemplates',
-          key: 'id'
-        }
+        references: {model: 'Users'}
       },
       name: {
         type: Sequelize.STRING(100),

@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
-    status: DataTypes.STRING(20),
     description: DataTypes.TEXT,
     primaryMediaId: DataTypes.INTEGER,
     symbol: DataTypes.STRING(20)

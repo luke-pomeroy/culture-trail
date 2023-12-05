@@ -13,11 +13,6 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false
       },
-      status: {
-        type: Sequelize.STRING(20),
-        allowNull: false,
-        defaultValue: 'draft'
-      },
       description: {
         type: Sequelize.TEXT
       },

@@ -2,16 +2,19 @@ const express = require('express');
 const router = express.Router();
 const { authJwt } = require('../../middleware/auth');
 const categoryController = require('../../controllers/category.controller');
-const categoryValidations = require('../../validations/category.validation');
 
-router.get('/', [authJwt.verifyAccessToken], categoryController.getAllCategories);
+router.get('/', categoryController.getAllCategories);
 
-router.get('/:categoryId', [authJwt.verifyAccessToken], categoryController.getCategory);
+router.get('/:categoryId', categoryController.getCategory);
 
-router.post('/', [authJwt.verifyAccessToken, authJwt.isEditor], categoryController.createCategory);
+router.post('/', [authJwt.isEditor], categoryController.createCategory);
 
-router.put('/:categoryId', [authJwt.verifyAccessToken, authJwt.isEditor], categoryController.updateCategory);
+router.post('/:categoryId/place/:placeId', [authJwt.isEditor], categoryController.addPlaceToCategory);
 
-router.delete('/:categoryId', [authJwt.verifyAccessToken, authJwt.isEditor], categoryController.deleteCategory);
+router.put('/:categoryId', [authJwt.isEditor], categoryController.updateCategory);
+
+router.delete('/:categoryId/place/:placeId', [authJwt.isEditor], categoryController.deletePlaceFromCategory);
+
+router.delete('/:categoryId', [authJwt.isEditor], categoryController.deleteCategory);
 
 module.exports = router;

@@ -12,13 +12,6 @@ const name = check('name', 'Name is required')
     .isLength({max: 100})
     .withMessage('Name cannot exceed 100 characters');
 
-const status = check('status')
-    .optional()
-    .isString()
-    .withMessage('Status should be a string')
-    .isLength({max: 20})
-    .withMessage('Status cannot exeed 20 characters');
-
 const description = check('description')
     .optional()
     .isString()
@@ -52,12 +45,9 @@ const longitude = check('longitude')
     })
     .withMessage('Latitude needed if longitude value included');
 
-    
-
 exports.validatePlace = [
     id,
     name,
-    status,
     description,
     externalLink,
     latitude,

@@ -13,6 +13,7 @@ module.exports = (err, req, res, next) => {
         err.message = 'Database Validation Error';
     }
 
+
     res.status(err.statusCode || 500);
     console.log(err);
     res.json({

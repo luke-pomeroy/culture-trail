@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       Place.belongsTo(models.Media, { foreignKey: 'primaryMediaId', as: 'primaryMedia' });
       Place.belongsToMany(models.Category, { through: models.PlaceCategory });
       Place.belongsToMany(models.Tour, { through: models.TourPlace });
-      Place.belongsToMany(models.TourTemplate, { through: models.TourTemplatePlace });
       Place.belongsToMany(models.Media, {
         through: {
           model: models.MediaLink,
@@ -32,11 +31,6 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING(100),
       allowNull: false
-    },
-    status: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
-      defaultValue: 'draft'
     },
     description: {
       type: DataTypes.TEXT,

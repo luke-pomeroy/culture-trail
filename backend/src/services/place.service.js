@@ -13,49 +13,37 @@ const getAllPlaces = async () => {
 };
 
 const getPlaceById = async (placeId) => {
-    try {
-        const place = await Place.findByPk(placeId, {
-            include: [
-                {association: 'primaryMedia', attributes: ['name', 'filename', 'caption', 'creditLine']},
-                {model: Category}
-            ]
-        });
+    const place = await Place.findByPk(placeId, {
+        include: [
+            {association: 'primaryMedia', attributes: ['name', 'filename', 'caption', 'creditLine']},
+            {model: Category}
+        ]
+    });
 
-        if (!place) {
-            throw createError(404, 'Resource Not Found', 'Place not found.');
-        }
-
-        return place;
-    } catch (err) {
-        throw err;
+    if (!place) {
+        throw createError(404, 'Resource Not Found', 'Place not found.');
     }
+
+    return place;
+
 };
 
 const createPlace = async (newPlace) => {
-    try {
-        const place = await Place.create(newPlace);
+    const place = await Place.create(newPlace);
 
-        if (newPlace.categories) {
-            const categories = await categoryService.getOrCreateCategories(newPlace.categories);
-            place.addCategories(categories);
-            place.dataValues.categories = categories;
-        }
-        console.log(place)
-        return place;
-    } catch (err) {
-        throw err;
+    if (newPlace.categories) {
+        const categories = await categoryService.getOrCreateCategories(newPlace.categories);
+        place.addCategories(categories);
+        place.dataValues.categories = categories;
     }
+    return place;
+
 };
 
 const updatePlace = async (placeId, fields) => {
-    try {
-        const place = await getPlaceById(placeId);
-        await place.update(fields);
-        return place;
-
-    } catch (err) {
-        throw err;
-    }
+    const place = await getPlaceById(placeId);
+    await place.update(fields);
+    return place;
 };
 
 const deletePlace = async (placeId) => {
