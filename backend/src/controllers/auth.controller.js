@@ -12,7 +12,7 @@ const register = async (req, res, next) => {
         const role = await roleService.getRoleByName('user');
         await user.setRoles(role);
 
-        res.send({ message: 'User was successfully registrered!'});
+        res.status(201).send({ status:"OK", message: 'User was successfully registrered!'});
 
     } catch (err) {
         return next(err);
@@ -40,12 +40,16 @@ const login = async (req, res, next) => {
         const { accessToken, refreshToken } = await authService.generateTokens(user);
 
         res.status(200).send({
-            user: {
-                id: user.id,
-                roles: user.Roles.map(role => role.name),
-            },
-            accessToken: accessToken,
-            refreshToken: refreshToken
+            status: "OK",
+            message: "New access and refresh token succesfully issued.",
+            data: {
+                user: {
+                    id: user.id,
+                    roles: user.Roles.map(role => role.name),
+                },
+                accessToken: accessToken,
+                refreshToken: refreshToken
+            }
         });
 
     } catch (err) {
@@ -68,8 +72,13 @@ const refreshToken = async (req, res, next) => {
         const { accessToken, refreshToken } = await authService.refreshTokens(user);
 
         res.status(200).send({
-            accessToken: accessToken,
-            refreshToken: refreshToken
+            status: "OK",
+            message: "New access and refresh token succesfully issued.",
+            data: {
+                accessToken: accessToken,
+                refreshToken: refreshToken
+            }
+            
         });
 
     } catch (err) {
