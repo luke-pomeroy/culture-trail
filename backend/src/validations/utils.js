@@ -5,9 +5,11 @@ exports.handleValidationErrors = function (req, _res, next) {
   if (!errors.isEmpty()) {
     const errorMessages = {};
     errors.array({ onlyFirstError: true })
-          .forEach((e) => errorMessages[e.path] = e.msg);
-    return next({ message: "Data Validation Error", 
-                  errors: errorMessages 
+      .forEach((e) => errorMessages[e.path] = e.msg);
+    return next({ 
+      statusCode: 400,
+      message: "Data Validation Error", 
+      errors: errorMessages 
     });
   }
   return next();

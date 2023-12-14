@@ -4,7 +4,8 @@ checkDuplicateEmail = async (req, res, next) => {
     const user = await User.findOne({ where: { email: req.body.email } });
     if (user) {
         res.status(422).send({
-            title: 'Validation Error',
+            status: "ERROR",
+            message: 'Data Validation Error',
             errors: {
                 email: "Email has already been registered!"
             }
@@ -19,11 +20,11 @@ checkRoleExists = async (req, res, next) => {
         const rolesData = await Role.findAll({ attributes: ['name']});
         let roles = [];
         rolesData.forEach((role) => roles.push(role.name));
-        console.log(roles);
         for (let i = 0; i < req.body.roles.length; i++) {
             if (!roles.includes(req.body.roles[i])) {
-                res.status(422).send({
-                    title: 'Validation Error',
+                res.status(400).send({
+                    status: "ERROR",
+                    message: 'Data Validation Error',
                     errors:{
                         roles: `Role "${req.body.roles[i]}" does not exist!`
                     }

@@ -5,14 +5,14 @@ const verifyAccessToken = (req, res, next) => {
     let token = getTokenFromRequest(req);
 
     if (!token) {
-        return next(createError(403, 'Authentication Error', 'An access token must be provided'));
+        return next(createError(401, 'Authentication Error', { accessToken: 'An access token must be provided' }));
     }
 
     jwt.verify(token,
         process.env.JWT_ACCESS_SECRET,
         (err, decoded) => {
             if (err) {
-                return next(createError(401, 'Authentication Error', 'Access token expired.'));
+                return next(createError(401, 'Authentication Error', { accessToken: 'Access token expired.' }));
             }
             req.userId = Number(decoded.sub);
             req.roles = decoded.roles;
@@ -24,14 +24,14 @@ const verifyRefreshToken = (req, res, next) => {
     let token = getTokenFromRequest(req);
 
     if (!token) {
-        return next(createError(403, 'Authentication Error', 'A refresh token must be provided'));
+        return next(createError(401, 'Authentication Error', { refreshToken: 'A refresh token must be provided' }));
     }
 
     jwt.verify(token,
         process.env.JWT_REFRESH_SECRET,
         (err, decoded) => {
             if (err) {
-                return next(createError(401, 'Authentication Error', 'Refresh token expired.'));
+                return next(createError(401, 'Authentication Error', { refreshToken: 'Refresh token expired.' }));
             }
             req.userId = Number(decoded.sub);
             req.token = token;
@@ -42,7 +42,7 @@ const verifyRefreshToken = (req, res, next) => {
 const getTokenFromRequest = (req) => {
     let authHeader = req.headers['authorization'];
     let token;
-    if (authHeader.startsWith("Bearer ")) {
+    if (authHeader && authHeader.length > 7 && authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7);
     }
     return token;
