@@ -1,4 +1,4 @@
-const { Role } = require('../db/models');
+const { Role } = require('../../db/models');
 
 const teardown = async () => {
     console.log('\nTearing down....\n');

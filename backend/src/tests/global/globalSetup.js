@@ -1,7 +1,7 @@
-const { Role } = require('../db/models');
+const { Role } = require('../../db/models');
 
 const setup = async () => {
-    console.log('\nSetting up....\n');
+    console.log('\n\nSetting up....\n');
     await Role.create({
         name: 'user'
     });
