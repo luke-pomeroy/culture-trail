@@ -12,8 +12,10 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: { model: 'Users' },
-        allowNull: false
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       hashedToken: {
         type: Sequelize.STRING(),

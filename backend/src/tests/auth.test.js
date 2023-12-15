@@ -8,6 +8,10 @@ const testUser = {
   password: "dj59696rjv"
 };
 
+afterAll(async() => {
+  await User.destroy({where: { email: testUser.email }});
+});
+
 describe('POST: /api/auth/register (register)', () => {
 
   it('Should return a success message when credentials supplied', async () => {
@@ -84,6 +88,21 @@ describe('POST: /api/auth/login (login)', () => {
       .post('/api/auth/login')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
+      .send({ email: 'doesnotexist@culture-trail.com', password: 'usernotexists'});
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toHaveProperty('status');
+    expect(res.body).toHaveProperty('message');
+    expect(res.body).toHaveProperty('errors');
+    expect(res.body.errors).toHaveProperty('user');
+    expect(res.body.status).toBe("ERROR");
+    expect(res.body.message).toBe("User not found.");
+  });
+
+  it('Should return an error when the user supplied does not exist', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
       .send();
     expect(res.statusCode).toEqual(400);
     expect(res.body).toHaveProperty('status');
@@ -102,15 +121,21 @@ describe('POST: /api/auth/refresh-token (refreshToken)', () => {
   let user, validRefreshToken, validAccessToken, invalidRefreshToken;
 
   beforeAll(async () => {
+    let role = await Role.findAll({where: {name: 'user'}});
     user = await User.create({
       email: "refreshauthtest@culturetrail.test",
       password: "dj59696rjv",
-      Roles: [
-        { name: 'user' }
-      ]
-    }, {
-      include: [ 'Roles' ]
     });
+    await user.setRoles(role);
+    await user.reload({
+      include: {
+          model: Role, 
+          attributes: ['id', 'name'],
+          through: {
+              attributes: []
+          }
+      }
+  });
 
     validAccessToken = await authService.generateAccessToken(user, '1m');
     validRefreshToken = await authService.generateRefreshToken(user, '5m');
@@ -118,7 +143,6 @@ describe('POST: /api/auth/refresh-token (refreshToken)', () => {
   });
 
   afterAll(async() => {
-    await authService.removeTokensFromWhitelistByUserId(user.id);
     await User.destroy({where: { id: user.id }});
   });
 
