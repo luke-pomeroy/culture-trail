@@ -1,5 +1,4 @@
 const categoryService = require("../services/category.service");
-const placeService = require('../services/place.service');
 
 exports.getAllCategories = async (req, res) => {
 

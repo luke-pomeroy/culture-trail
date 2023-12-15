@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Tour.belongsToMany(models.Place, { through: models.TourPlace });
+      Tour.belongsToMany(models.Place, { through: models.TourPlace, onDelete: 'CASCADE' , onUpdate: 'CASCADE'});
       Tour.belongsTo(models.User);
       Tour.belongsTo(models.Media, { foreignKey: 'primaryMediaId', as: 'primaryMedia' });
     }
