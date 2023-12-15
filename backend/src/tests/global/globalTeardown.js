@@ -5,9 +5,7 @@ const testRoles = global.__TEST_ROLES__;
 const testUsers = global.__TEST_USERS__;
 const testCategories = global.__TEST_CATEGORIES__;
 const testPlaces = global.__TEST_PLACES__;
-const  testTours = global.__TEST_TOURS__;
-
-console.log(testRoles[0])
+const testTours = global.__TEST_TOURS__;
 
 const teardown = async () => {
 

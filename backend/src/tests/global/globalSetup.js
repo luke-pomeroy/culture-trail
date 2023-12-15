@@ -102,14 +102,11 @@ const setup = async () => {
         await testTour.setPlaces(testPlaces);
         testTours.push(testTour);
 
-
         // Add a valid access token for each testUser
         for (const user of testUsers){
             const accessToken = await authService.generateAccessToken(user, '1h');
             user.setDataValue('validAccessToken', accessToken);
         }
-
-
 
     } catch (err) {
         console.log(err);
