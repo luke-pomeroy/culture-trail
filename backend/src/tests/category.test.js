@@ -1,3 +1,8 @@
+const request = require('supertest');
+const app = require('../app');
+const testUsers = global.__TEST_USERS__;
+const testCategories = global.__TEST_CATEGORIES__;
+
 describe('GET: /api/category (getAllCategories)', () => {
 
 });

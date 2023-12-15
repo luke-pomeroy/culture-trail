@@ -1,3 +1,8 @@
+const request = require('supertest');
+const app = require('../app');
+const testUsers = global.__TEST_USERS__;
+const testTours = global.__TEST_TOURS__;
+
 describe('GET: /api/tour (getUserTours)', () => {
 
 });

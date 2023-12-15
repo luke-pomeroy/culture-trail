@@ -1,8 +1,9 @@
-const { Role, User, Category, Place, Tour } = require('../../db/models');
+const { Role, User, Category, Place, Tour, Media } = require('../../db/models');
 const { Op } = require('sequelize');
 
 const testRoles = global.__TEST_ROLES__;
 const testUsers = global.__TEST_USERS__;
+const testMedia = global.__TEST_MEDIA__;
 const testCategories = global.__TEST_CATEGORIES__;
 const testPlaces = global.__TEST_PLACES__;
 const testTours = global.__TEST_TOURS__;
@@ -49,6 +50,14 @@ const teardown = async () => {
             where: {
                 id: {
                     [Op.in]: testTours.map(tour => tour.id)
+                }
+            }
+        });
+
+        await Media.destroy({
+            where: {
+                id: {
+                    [Op.in]: testMedia.map(media => media.id)
                 }
             }
         });

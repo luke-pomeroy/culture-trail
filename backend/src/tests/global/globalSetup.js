@@ -28,6 +28,7 @@ const userData = [
 
 const testRoles = [];
 const testUsers = [];
+const testMedia = [];
 const testCategories = [];
 const testPlaces = [];
 const testTours = [];
@@ -117,6 +118,7 @@ const setup = async () => {
 // Save test data to global variables for access during tests and teardown
 global.__TEST_ROLES__ = testRoles;
 global.__TEST_USERS__ = testUsers;
+global.___TEST_MEDIA__ = testMedia;
 global.__TEST_CATEGORIES__ = testCategories;
 global.__TEST_PLACES__ = testPlaces;
 global.__TEST_TOURS__ = testTours;
